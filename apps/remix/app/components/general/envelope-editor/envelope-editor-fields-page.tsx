@@ -351,21 +351,27 @@ export const EnvelopeEditorFieldsPage = () => {
 
             {editorConfig.fields?.allowAIDetection && (
               <>
+                {/*
+                  Field detection shares the AI gate with recipient detection and
+                  needs Google Vertex credentials this instance does not set, so
+                  every request is rejected. Shown as Coming soon rather than
+                  failing on click.
+                */}
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="mt-4 w-full"
+                  className="mt-4 w-full opacity-60"
                   onClick={onDetectClick}
-                  disabled={envelope.status !== DocumentStatus.DRAFT}
-                  title={
-                    envelope.status !== DocumentStatus.DRAFT
-                      ? _(msg`You can only detect fields in draft envelopes`)
-                      : undefined
-                  }
+                  disabled
+                  aria-disabled="true"
+                  title={_(msg`Automatic field detection is coming soon`)}
                 >
                   <SparklesIcon className="mr-2 -ml-1 h-4 w-4" />
                   <Trans>Detect with AI</Trans>
+                  <span className="ml-2 text-[10px] font-bold uppercase tracking-[0.15em] text-[#F2C84A]">
+                    <Trans>Coming soon</Trans>
+                  </span>
                 </Button>
 
                 <AiFieldDetectionDialog

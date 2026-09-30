@@ -607,24 +607,35 @@ export const EnvelopeEditorRecipientForm = () => {
         <div className="flex flex-row items-center space-x-2">
           {editorConfig.recipients?.allowAIDetection && (
             <Tooltip>
+              {/*
+                AI recipient detection needs Google Vertex credentials
+                (GOOGLE_VERTEX_PROJECT_ID / GOOGLE_VERTEX_API_KEY), which this
+                instance does not set, so the endpoint rejects every request.
+                Surface it as Coming soon rather than letting it fail. A span
+                wrapper is required because a disabled button emits no pointer
+                events and would swallow the tooltip.
+              */}
               <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  type="button"
-                  size="sm"
-                  disabled={isSubmitting}
-                  onClick={onDetectRecipientsClick}
-                >
-                  <SparklesIcon className="h-4 w-4" />
-                </Button>
+                <span className="inline-flex" tabIndex={0}>
+                  <Button
+                    variant="outline"
+                    type="button"
+                    size="sm"
+                    disabled
+                    aria-disabled="true"
+                    className="pointer-events-none flex flex-row items-center gap-x-2 opacity-60"
+                    onClick={onDetectRecipientsClick}
+                  >
+                    <SparklesIcon className="h-4 w-4" />
+                    <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#F2C84A]">
+                      <Trans>Coming soon</Trans>
+                    </span>
+                  </Button>
+                </span>
               </TooltipTrigger>
 
               <TooltipContent>
-                {team.preferences.aiFeaturesEnabled ? (
-                  <Trans>Detect recipients with AI</Trans>
-                ) : (
-                  <Trans>Enable AI detection</Trans>
-                )}
+                <Trans>Automatic recipient detection is coming soon</Trans>
               </TooltipContent>
             </Tooltip>
           )}
